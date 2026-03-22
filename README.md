@@ -584,17 +584,13 @@ AI directly gives:
 
 ## 📸 Screenshots
 
-![Dashboard Placeholder](1.jpeg)
-*AI Mentor chat, problem list, and learning progress tracking*
+![1](https://github.com/user-attachments/assets/87e79e3d-be3c-4a99-9906-3cea70fd47c6)
 
-![Hint System Placeholder](h2.jpeg)
-*Progressive hints and real-time feedback*
+![h2](https://github.com/user-attachments/assets/e6539cca-6f1e-4746-92de-62feaa02bfe3)
 
-![Memory System Placeholder](h3.jpeg)
-*Learning patterns and mistake analysis*
+![h3](https://github.com/user-attachments/assets/697e32f7-96e6-42a2-b5d0-0130fba19ca8)
 
-![Analytics Placeholder](h4.jpeg)
-*Progress tracking and performance metrics*
+![h4](https://github.com/user-attachments/assets/8aaf3310-b110-417d-828f-bd673d3ca46b)
 
 ---
 
