@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:9090/api/v1",
+  baseURL: "https://hindsight-hackthon-backend.onrender.com/api/v1",
 });
 
 apiClient.interceptors.request.use((config) => {

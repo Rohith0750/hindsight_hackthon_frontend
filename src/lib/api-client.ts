@@ -4,7 +4,7 @@ import { LEARNING_PATH_NODES, BOSS_DATA, SKILL_TREE_DATA, STREAK_ACTIVITY, SUBMI
 import { hindsightClient } from './hindsight';
 
 // ✅ Single consolidated backend at port 9090
-const MAIN_API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:9090/api/v1';
+const MAIN_API = process.env.NEXT_PUBLIC_API_URL ?? 'https://hindsight-hackthon-backend.onrender.com/api/v1';
 
 const mainClient = axios.create({ baseURL: MAIN_API });
 
