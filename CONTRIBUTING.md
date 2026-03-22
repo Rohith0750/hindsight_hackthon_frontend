@@ -1,103 +1,382 @@
-# CONTRIBUTING.md
+# Contributing to Hindsight
 
-## 🚀 Setup
+Thank you for your interest in contributing to **Hindsight**! We welcome contributions from developers, designers, and enthusiasts who want to help improve this AI-powered learning platform.
 
-1. **Clone the Main Repository**
-   ```bash
-   https://github.com/GauravKesh/hindsight_hackathon.git
-   cd hindsight_hackathon
-   ```
+## 📋 Table of Contents
 
-* ❌ **No fork required**
-* ❌ **No upstream setup needed**
+- [Code of Conduct](#-code-of-conduct)
+- [Getting Started](#-getting-started)
+- [Development Setup](#-development-setup)
+- [Branching Strategy](#-branching-strategy)
+- [Making Changes](#-making-changes)
+- [Commit Guidelines](#-commit-guidelines)
+- [Submitting a Pull Request](#-submitting-a-pull-request)
+- [Code Style Guide](#-code-style-guide)
+- [Reporting Bugs](#-reporting-bugs)
+- [Suggesting Features](#-suggesting-features)
+
+---
+
+## 🤝 Code of Conduct
+
+We are committed to providing a welcoming and inclusive environment for all contributors. Please be respectful, constructive, and professional in all interactions.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 16+ and npm/yarn
+- Git
+- GitHub account
+- MongoDB Atlas account (for backend development)
+- OpenAI API key (for AI features)
+
+### Clone the Repository
+
+**For the Frontend:**
+```bash
+git clone https://github.com/Rohith0750/hindsight_hackthon_frontend.git
+cd hindsight_hackthon_frontend
+```
+
+**For the Backend:**
+```bash
+git clone https://github.com/Rohith0750/hindsight_hackthon_backend.git
+cd hindsight_hackthon_backend
+```
+
+---
+
+## 🛠️ Development Setup
+
+### Frontend Development
+
+```bash
+# Install dependencies
+npm install
+
+# Create environment file
+cp .env.example .env.local
+
+# Start development server
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Backend Development
+
+```bash
+# Install dependencies
+npm install
+
+# Create environment file
+cp .env.example .env
+
+# Start development server
+npm run dev
+```
+
+Backend runs on [http://localhost:5000](http://localhost:5000) by default.
 
 ---
 
 ## 🌿 Branching Strategy
 
-### ⚠️ Rules
-* ❌ **Do NOT push to `main`**
-* ❌ **Do NOT use `feat/<name>`**
-* ✅ **Use your username as the branch name**
+### Branch Naming Conventions
+
+Use descriptive branch names following this pattern:
+
+```
+<type>/<feature-name>
+```
+
+**Valid types:**
+- `feat/` — New feature
+- `fix/` — Bug fix
+- `docs/` — Documentation
+- `refactor/` — Code refactoring
+- `test/` — Tests
+- `chore/` — Maintenance tasks
+- `perf/` — Performance improvements
+
+**Examples:**
+```bash
+git checkout -b feat/smart-hint-system
+git checkout -b fix/memory-persistence-issue
+git checkout -b docs/api-endpoints
+```
+
+### Branch Rules
+
+✅ **Do:**
+- Create branches from `main`
+- Use lowercase, hyphenated names
+- Be descriptive and concise
+
+❌ **Don't:**
+- Push directly to `main`
+- Use `feat/<name>` for all branches
+- Use uppercase or underscores
+
+---
+
+## 💻 Making Changes
+
+1. **Create and checkout your branch:**
+   ```bash
+   git checkout -b feat/your-feature-name
+   ```
+
+2. **Make your changes** and commit regularly (see [Commit Guidelines](#-commit-guidelines))
+
+3. **Keep your branch up to date:**
+   ```bash
+   git fetch origin
+   git rebase origin/main
+   ```
+
+4. **Test your changes thoroughly:**
+   - Frontend: `npm run dev` and test in browser
+   - Backend: `npm run dev` and test with API client
+   - Run linting: `npm run lint`
+
+---
+
+## 📝 Commit Guidelines
+
+Write clear, descriptive commit messages following the **Conventional Commits** format:
+
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+### Examples
 
 ```bash
-git checkout -b <your-username>
+# Simple commit
+git commit -m "feat(mentor): add adaptive hint generation"
+
+# Detailed commit
+git commit -m "fix(memory): resolve session data persistence issue
+
+- Added proper MongoDB transaction handling
+- Implemented retry logic for failed writes
+- Updated schema validation
+
+Fixes #42"
+```
+
+### Commit Types
+
+- **feat**: A new feature
+- **fix**: A bug fix
+- **docs**: Documentation changes
+- **test**: Adding or updating tests
+- **refactor**: Code restructuring without behavior changes
+- **perf**: Performance improvements
+- **chore**: Maintenance, dependencies, etc.
+- **style**: Code formatting (linting)
+
+---
+
+## 🔀 Submitting a Pull Request
+
+### Before Creating a PR
+
+1. ✅ Ensure all tests pass: `npm test`
+2. ✅ Run linting: `npm run lint`
+3. ✅ Update documentation if needed
+4. ✅ Verify your changes work locally
+5. ✅ Keep commits clean and descriptive
+
+### Creating a Pull Request
+
+1. **Push your branch:**
+   ```bash
+   git push origin feat/your-feature-name
+   ```
+
+2. **Open a PR on GitHub** with:
+   - Clear title describing the change
+   - Description of what changed and why
+   - Reference to related issues (use `Fixes #42`)
+   - Screenshots (if UI changes)
+
+3. **PR Template:**
+   ```markdown
+   ## Description
+   Brief description of the changes.
+
+   ## Type of Change
+   - [ ] Bug fix
+   - [ ] New feature
+   - [ ] Breaking change
+   - [ ] Documentation update
+
+   ## Testing
+   - [ ] Tested locally
+   - [ ] All tests passing
+   - [ ] No new warnings
+
+   ## Checklist
+   - [ ] Code follows style guidelines
+   - [ ] Self-reviewed my code
+   - [ ] Comments added for complex logic
+   - [ ] Documentation updated
+   ```
+
+### PR Review Process
+
+- Maintainers will review your PR
+- Address feedback and update your PR as needed
+- Once approved, your PR will be merged
+- Delete your branch after merging
+
+---
+
+## 📐 Code Style Guide
+
+### Frontend (TypeScript/React)
+
+```typescript
+// Use TypeScript types
+const getUserData = (userId: string): Promise<User> => {
+  // ...
+};
+
+// React component naming
+const UserDashboard: React.FC<DashboardProps> = ({ data }) => {
+  return <div>{/* component content */}</div>;
+};
+
+// Hooks before jsx
+const useUserData = () => {
+  const [user, setUser] = useState<User | null>(null);
+  // ...
+};
+```
+
+### Backend (TypeScript/Node.js)
+
+```typescript
+// Clear naming and typing
+interface HintRequest {
+  userId: string;
+  problemId: string;
+  attemptCount: number;
+}
+
+// Error handling
+export const generateHint = async (req: HintRequest): Promise<string> => {
+  try {
+    // implementation
+  } catch (error) {
+    console.error('Hint generation failed:', error);
+    throw new Error('Failed to generate hint');
+  }
+};
+```
+
+### General Guidelines
+
+- 👁️ **Readability**: Write code others can easily understand
+- 📝 **Comments**: Explain "why" not "what" (code shows what)
+- 📏 **Line Length**: Keep lines under 100 characters
+- 🎯 **Functions**: Keep them small and focused
+- 🧪 **Tests**: Write tests for critical logic
+- 📦 **Imports**: Organize imports alphabetically
+
+### Formatting
+
+- Use 2-space indentation
+- Use semicolons (no ASI)
+- Use single quotes for strings
+- Use `const` by default, `let` when needed
+
+---
+
+## 🐛 Reporting Bugs
+
+### Bug Report Template
+
+When reporting a bug, include:
+
+```markdown
+## Description
+Clear description of the bug.
+
+## Steps to Reproduce
+1. Step 1
+2. Step 2
+3. ...
+
+## Expected Behavior
+What should happen.
+
+## Actual Behavior
+What actually happens.
+
+## Environment
+- OS: (e.g., Windows, macOS, Linux)
+- Node.js version
+- Browser (if frontend issue)
+
+## Screenshots
+If applicable, add screenshots or videos.
 ```
 
 ---
 
-## 🧪 Local Compatibility Branch (MANDATORY)
+## 💡 Suggesting Features
 
-1. **Create the local branch:**
-   ```bash
-   git checkout -b <your-username>-local
-   ```
-2. **Sync with latest `main`:**
-   ```bash
-   git checkout main
-   git pull origin main
-   ```
-3. **Merge into local branch:**
-   ```bash
-   git checkout <your-username>-local
-   git merge main
-   ```
-4. **Test and merge back:**
-   ```bash
-   git checkout <your-username>
-   git merge <your-username>-local
-   ```
+### Feature Request Template
 
-> [!CAUTION]
-> **Never** create a Pull Request (PR) from the `-local` branch.
+When suggesting a feature, include:
 
----
+```markdown
+## Feature Description
+What feature would you like?
 
-## 🔄 Sync Before Push (MANDATORY)
+## Use Case
+Why would this be useful?
 
-Keep your branch up to date with the latest changes:
+## Proposed Solution
+How should it work?
 
-```bash
-git checkout main
-git pull origin main
-git checkout <your-username>
-git merge main
-```
+## Alternative Solutions
+Any other approaches?
 
-### 💾 Stash (Optional)
-If you have uncommitted changes while switching branches:
-```bash
-git stash -u
-git stash pop
+## Additional Context
+Any other relevant info?
 ```
 
 ---
 
-## 💻 Workflow Summary
+## 📚 Additional Resources
 
-1.  **Create branch** (`<your-username>`)
-2.  **Make changes**
-3.  **Create local branch** (`-local`)
-4.  **Merge latest main**
-5.  **Test everything**
-6.  **Merge back** to your username branch
-7.  **Push & create PR**
+- [Frontend Repository](https://github.com/Rohith0750/hindsight_hackthon_frontend)
+- [Backend Repository](https://github.com/Rohith0750/hindsight_hackthon_backend)
+- [Documentation](README.md)
+- [Issues](https://github.com/Rohith0750/hindsight_hackthon_frontend/issues)
 
 ---
 
-## 📤 Push
+## ❓ Questions?
 
-```bash
-git add .
-git commit -m "feat: <message>"
-git push origin <your-username>
-```
+Have questions? Open an issue or reach out to the maintainers:
+- 📧 Email: [your-email@example.com]
+- 💬 GitHub Issues: Ask your question in the appropriate repository
 
 ---
 
-## 🔀 Pull Request
-
-* **Target:** `PR` → `main`
+**Thank you for contributing to Hindsight! Your efforts help make learning smarter. 🎉**
 * **Include in Description:**
     * **What** changed
     * **Why** it changed
