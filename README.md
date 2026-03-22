@@ -1,329 +1,656 @@
-# 🧠 Hindsight (CodeMind)
+# Hindsight — AI Mentor with Hindsight Memory & Smart Hint System
 
-> **Code. Fail. Learn. Repeat — But Smarter.**
+<div align="center">
 
-Hindsight is an **AI-powered coding mentor** that helps developers level up by learning from their own mistakes. Unlike generic coding platforms, Hindsight builds a persistent memory of every error you make, detects recurring patterns in your thinking, and dynamically generates a personalized learning path — so every practice session is targeted and efficient.
+[![GitHub](https://img.shields.io/badge/GitHub-Hindsight-blue?logo=github&style=flat-square)](https://github.com/Rohith0750)
+[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![Frontend](https://img.shields.io/badge/Frontend-Next.js-black?style=flat-square&logo=next.js)](https://github.com/Rohith0750/hindsight_hackthon_frontend)
+[![Backend](https://img.shields.io/badge/Backend-Node.js-green?style=flat-square&logo=node.js)](https://github.com/Rohith0750/hindsight_hackthon_backend)
 
----
+**An intelligent AI learning mentor that remembers your mistakes and adapts hints over time** 🧠✨
 
-## 📖 Table of Contents
-
-1. [What is Hindsight?](#-what-is-hindsight)
-2. [How It Works](#-how-it-works)
-3. [Features](#-features)
-4. [Application Pages](#-application-pages)
-5. [Architecture](#-architecture)
-6. [Project Structure](#-project-structure)
-7. [Technology Stack](#-technology-stack)
-8. [Getting Started](#-getting-started)
-9. [Scripts](#-scripts)
-10. [Contributing](#-contributing)
+</div>
 
 ---
 
-## 💡 What is Hindsight?
+## 📋 Table of Contents
 
-Most coding platforms tell you *if* you got an answer right or wrong. Hindsight goes further — it tells you **why** you keep getting it wrong.
-
-The platform has three core ideas:
-
-1. **Memory**: Every submission, every mistake, and every breakthrough is stored and remembered.
-2. **Pattern Recognition**: The AI analyzes your history to identify recurring error types (e.g., off-by-one errors, null pointer mistakes, inefficient algorithms).
-3. **Adaptive Learning**: Based on your identified weak spots, the platform generates a prioritized problem queue and learning path tailored specifically to you.
-
-The result is a feedback loop where the more you practice, the smarter your learning plan becomes.
+- [About Hindsight](#-about-hindsight)
+- [Core Features](#-core-features)
+- [How Hindsight Works](#-how-hindsight-works)
+- [Architecture](#-architecture)
+- [Tech Stack](#-tech-stack)
+- [API Endpoints](#-api-endpoints)
+- [Hindsight Memory Model](#-hindsight-memory-model)
+- [Installation](#-installation)
+- [Environment Variables](#-environment-variables)
+- [Deployment](#-deployment)
+- [Example Flow](#-example-flow)
+- [Screenshots](#-screenshots)
+- [Future Improvements](#-future-improvements)
+- [License](#-license)
 
 ---
 
-## ⚙️ How It Works
+## 🎯 About Hindsight
+
+**Hindsight** is an AI-powered learning mentor that revolutionizes how students learn by incorporating adaptive, personalized hints. Unlike traditional tutoring systems that provide generic guidance, Hindsight:
+
+✅ **Observes** user problem-solving attempts  
+✅ **Tracks** mistakes and learning patterns  
+✅ **Stores** hint usage history  
+✅ **Remembers** past sessions and context  
+✅ **Improves** hints based on failures  
+✅ **Prevents** generic, unhelpful suggestions  
+✅ **Provides** contextual, intelligent guidance  
+
+### 🧠 The Hindsight Learning Engine
+
+The core innovation of Hindsight is its **Hindsight Learning Engine** — a system that learns from past interactions:
 
 ```
-User solves a problem
-        │
-        ▼
-   Code submitted
-        │
-        ▼
-Verdict generated (Accepted / Wrong Answer / TLE / etc.)
-        │
-        ▼
-Mistake stored in Hindsight Memory (if incorrect)
-        │
-        ▼
-AI analyzes all stored mistakes → detects patterns
-        │
-        ▼
-Dashboard & Learning Path updated with new insights
-        │
-        ▼
-AI recommends next problems to tackle weak areas
+Hints Taken → Stored
+     ↓
+Mistakes Logged → Analyzed
+     ↓
+Language Preference → Tracked
+     ↓
+Session Summaries → Generated
+     ↓
+Next Hints → Become Smarter
+     ↓
+Mentor Adapts → Based on Past Failures
 ```
 
-All of this happens in real time. The AI Coach is also available inline while you solve problems, offering hints and tips without giving away the answer.
+This creates a virtuous cycle where every failed attempt makes the next hint more effective and personalized.
 
 ---
 
-## ✨ Features
+## ⭐ Core Features
 
-### 🧠 Hindsight Memory
-A persistent store of every mistake you've made, tagged by problem type, error category, and frequency. This is the foundation that powers all AI recommendations.
-
-### 🔍 Pattern Detection
-Automatically categorizes mistakes into patterns (e.g., *"Off-by-one errors in array traversal"*, *"Forgetting edge cases for empty input"*). Each pattern is scored by severity and trend direction (improving / worsening).
-
-### 🗺️ Personalized Learning Paths
-An AI-generated, visual graph of problem nodes ordered and connected based on your weaknesses. Completed nodes unlock the next set of recommended problems. The path updates as you progress.
-
-### 📊 Interactive Dashboard
-- **Streak & XP tracking** — Gamified progress system
-- **Accuracy metrics** — % of correct first attempts
-- **AI Insights panel** — Actionable tips based on your mistake history
-- **Recommended problems** — AI-prioritized problems targeting your weakest areas
-- **Submission history** — Timeline of all past attempts
-
-### ✍️ Code Editor (Monaco)
-A full-featured in-browser code editor (the same engine as VS Code) with:
-- Syntax highlighting for multiple languages
-- Test case runner
-- Submit button with real-time verdict feedback
-- Inline AI Coach chat panel
-
-### 📈 Progress Analytics
-Charts and graphs showing your improvement over time:
-- Problems solved per day/week
-- Accuracy trend
-- Language proficiency breakdown
-- Mistake frequency over time
-
-### 🌗 Dark / Light Mode
-Full dark and light theme support with instant switching, using CSS variables and Next Themes.
+| Feature | Description |
+|---------|-------------|
+| 🤖 **AI Mentor Chat** | Real-time conversational learning with intelligent responses |
+| 🧠 **Hindsight Memory Engine** | Persistent learning memory that adapts to user patterns |
+| 💡 **Smart Hint System** | Progressive, context-aware hints that improve over time |
+| 📊 **Session Tracking** | Complete records of learning sessions and progress |
+| ❌ **Mistake Detection** | Automatic analysis of errors and misconceptions |
+| 🎯 **Context-Aware Hints** | Hints tailored to user's specific failure patterns |
+| 🔀 **Progressive Hint Gating** | Structured hints that reveal information gradually |
+| 📈 **Learning Adaptation** | AI model adapts based on historical learning patterns |
+| 📝 **Attempt Analysis** | Deep analysis of submitted attempts and solutions |
+| 💬 **Structured Feedback** | Organized, actionable feedback for each attempt |
+| ⚡ **Real-Time Mentor Response** | Instant guidance without delays |
+| 💾 **Persistent Learning Memory** | All learning data stored securely for future sessions |
 
 ---
 
-## 📄 Application Pages
+## 🔄 How Hindsight Works
 
-| Route | Description |
-|-------|-------------|
-| `/` | **Landing page** — Hero section, feature highlights, stats, and call-to-action |
-| `/auth` | **Authentication** — Login / sign-up page |
-| `/dashboard` | **Main dashboard** — Streak, XP, AI insights, recommended problems, recent submissions |
-| `/problems` | **Problem catalog** — Browse all problems with filters for difficulty, tags, and AI priority |
-| `/problems/[id]` | **Problem detail** — Description, Monaco code editor, test runner, AI Coach chat |
-| `/progress` | **Progress tracker** — Charts and analytics for your coding journey |
-| `/learning-path` | **Learning path** — Visual graph of your AI-generated personalized path |
+### Step-by-Step Architecture Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    User Submits Attempt                      │
+└──────────────────────────┬──────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│              Backend Analyzes Attempt                        │
+│         (Format, Logic, Edge Cases, Performance)             │
+└──────────────────────────┬──────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│            AI Generates Contextual Hint                      │
+│      (Using Hindsight Memory + Current Context)              │
+└──────────────────────────┬──────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│         Hint Usage Stored in Memory                          │
+└──────────────────────────┬──────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│              Mistake Logged & Analyzed                       │
+└──────────────────────────┬──────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│         Session Summary Generated                            │
+│     (Concepts Covered, Mistakes, Progress)                   │
+└──────────────────────────┬──────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│       Hindsight Memory Updated                               │
+│  (Patterns Identified, Next Hints Become Smarter)            │
+└──────────────────────────┬──────────────────────────────────┘
+                           ↓
+┌─────────────────────────────────────────────────────────────┐
+│        Response Sent to Frontend                             │
+│    (Hint + Feedback + Encouragement)                         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### What Hindsight Remembers
+
+Hindsight improves by remembering:
+
+- 📌 **Hints Taken** — What guidance has been provided before
+- ❌ **Wrong Answers** — Previous failed attempts and solutions
+- 🗣️ **Learning Language** — User's preferred explanation style
+- 📊 **Difficulty Level** — Appropriate challenge progression
+- 🔗 **Concept Failure Patterns** — Which topics the user struggles with
+- ⏱️ **Timestamps** — When concepts were learned for spaced repetition
 
 ---
 
 ## 🏗️ Architecture
 
-The application is a **Next.js App Router** project. Here is a high-level map of how the key modules interact:
+### System Architecture Diagram
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    Browser / Client                      │
-│                                                         │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐ │
-│  │  Auth       │    │  Theme      │    │  React      │ │
-│  │  Context    │    │  Context    │    │  Query      │ │
-│  └──────┬──────┘    └──────┬──────┘    └──────┬──────┘ │
-│         │                 │                  │         │
-│         └─────────────────┴──────────────────┘         │
-│                           │                            │
-│              ┌────────────▼────────────┐               │
-│              │    Page Components      │               │
-│              │  (dashboard, problems,  │               │
-│              │   progress, learning)   │               │
-│              └────────────┬────────────┘               │
-│                           │                            │
-│         ┌─────────────────┴─────────────────┐          │
-│         │                                   │          │
-│  ┌──────▼──────┐                   ┌────────▼──────┐   │
-│  │  api-client │                   │  hindsight.ts │   │
-│  │  (problems, │                   │  (memory,     │   │
-│  │   submit,   │                   │   patterns,   │   │
-│  │   run code) │                   │   insights)   │   │
-│  └─────────────┘                   └───────────────┘   │
-└─────────────────────────────────────────────────────────┘
-```
-
-### Core Modules
-
-#### `src/lib/hindsight.ts` — The Memory Engine
-This is the heart of the platform. It exposes functions to:
-- `storeMistake()` — Persist a coding mistake with metadata
-- `getMistakePatterns()` — Retrieve detected patterns from mistake history
-- `getPersonalizedInsights()` — Fetch AI-generated improvement tips
-- `getRecommendedProblems()` — Get a prioritized problem list targeting weak areas
-- `getCoachContext()` — Provide AI coach with problem-specific context
-- `storeSession()` — Save a summary of a coding session
-
-> **Note**: Currently uses mock data with simulated delays. Intended to be replaced with a real Hindsight SDK backend.
-
-#### `src/lib/api-client.ts` — The API Layer
-All data fetching goes through this module:
-- `getProblems()` / `getProblem(id)` — Problem catalog
-- `submitCode()` — Submit a solution and get a verdict
-- `runCode()` — Run code against sample test cases
-- `sendCoachMessage()` — Send a message to the AI coach
-- `getMistakePatterns()` / `getPersonalizedInsights()` — Proxied to hindsight.ts
-
-#### `src/lib/types.ts` — Shared TypeScript Types
-Defines all shared interfaces used across the app:
-- `Problem` — id, title, difficulty, tags, description, examples, starter code
-- `UserProfile` — streak, XP, level, language proficiency, solve count
-- `MistakePattern` — name, frequency, trend, severity, related problems
-- `Submission` — verdict, runtime, memory, language, code
-- `LearningPathNode` — position, status, connections
-- `Insight` — AI-generated recommendation with severity and action
-
-#### `src/context/AuthContext.tsx` — Authentication
-Simple auth context using localStorage. Provides `useAuth()` hook for:
-- Current user data
-- Login / logout methods
-
-#### `src/context/ThemeContext.tsx` — Theming
-Dark/light mode toggle powered by Next Themes. Accessible via `useTheme()` hook throughout the app.
-
----
-
-## 📂 Project Structure
-
-```
-hindsight_hackathon/
-├── src/
-│   ├── app/                          # Next.js App Router
-│   │   ├── page.tsx                  # Landing page
-│   │   ├── layout.tsx                # Root layout
-│   │   ├── globals.css               # Global styles & CSS variables
-│   │   ├── auth/
-│   │   │   └── page.tsx              # Auth / login page
-│   │   └── (dashboard)/              # Protected route group
-│   │       ├── layout.tsx            # Dashboard layout (sidebar + navbar)
-│   │       ├── dashboard/page.tsx    # Main dashboard
-│   │       ├── problems/page.tsx     # Problem catalog
-│   │       ├── problems/[id]/page.tsx # Problem detail + code editor
-│   │       ├── progress/page.tsx     # Analytics & progress
-│   │       └── learning-path/page.tsx # AI learning path graph
-│   │
-│   ├── components/
-│   │   ├── ui/                       # 40+ Shadcn/Radix UI primitives
-│   │   ├── layout/
-│   │   │   ├── Navbar.tsx            # Top navigation bar
-│   │   │   ├── Sidebar.tsx           # Left navigation sidebar
-│   │   │   └── DashboardLayout.tsx   # Route protection + layout wrapper
-│   │   └── providers/
-│   │       └── ClientProviders.tsx   # React Query, Auth, Theme providers
-│   │
-│   ├── hooks/                        # Custom React hooks
-│   │   ├── useAuth.ts                # Auth state
-│   │   ├── useTheme.ts               # Theme state
-│   │   ├── useAICoach.ts             # AI coach data fetching
-│   │   ├── useMistakePatterns.ts     # Mistake pattern queries
-│   │   └── useProblems.ts            # Problem list queries
-│   │
-│   ├── context/                      # React Context providers
-│   │   ├── AuthContext.tsx
-│   │   └── ThemeContext.tsx
-│   │
-│   ├── lib/                          # Core utilities
-│   │   ├── types.ts                  # All TypeScript interfaces
-│   │   ├── hindsight.ts              # Hindsight memory/AI client
-│   │   ├── api-client.ts             # Data fetching functions
-│   │   ├── mock-data.ts              # Development mock data
-│   │   └── utils.ts                  # Helper utilities
-│   │
-│   └── test/                         # Playwright E2E tests
-│       ├── example.test.ts
-│       └── setup.ts
-│
-├── public/                           # Static assets
-├── middleware.ts                     # Next.js route middleware
-├── package.json
-├── tsconfig.json                     # TypeScript config (@ alias → src/)
-├── tailwind.config.ts                # Custom design tokens & theme
-├── next.config.ts                    # Next.js configuration
-├── playwright.config.ts              # E2E test configuration
-└── eslint.config.mjs                 # Linting rules
+│         FRONTEND (Next.js + React + TypeScript)         │
+│  • UI Components  • State Management  • Chat Interface  │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+                       ↓ HTTP/REST API
+┌─────────────────────────────────────────────────────────┐
+│     BACKEND (Node.js + Express + REST APIs)             │
+│  • Request Handling  • Authentication  • Routing        │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+                       ↓
+┌─────────────────────────────────────────────────────────┐
+│         HINDSIGHT ENGINE                                │
+│  • Hint Generation • Memory Processing                  │
+│  • Mistake Analysis • Context Building                  │
+└──────────────────────┬──────────────────────────────────┘
+                       │
+        ┌──────────────┼──────────────┐
+        ↓              ↓              ↓
+  ┌──────────┐  ┌────────────┐  ┌──────────┐
+  │ MongoDB  │  │ AI Model   │  │ Session  │
+  │  Memory  │  │(OpenAI)    │  │  Store   │
+  │  Store   │  │            │  │          │
+  └──────────┘  └────────────┘  └──────────┘
 ```
 
 ---
 
-## 🛠️ Technology Stack
+## 🛠️ Tech Stack
 
-| Category | Technology | Role |
-|----------|------------|------|
-| **Framework** | [Next.js 16](https://nextjs.org/) (App Router) | Full-stack React framework, routing, SSR |
-| **Language** | [TypeScript 5](https://www.typescriptlang.org/) | Type safety across the entire codebase |
-| **Styling** | [Tailwind CSS 4](https://tailwindcss.com/) | Utility-first CSS with custom design tokens |
-| **Animations** | [Framer Motion 11](https://www.framer.com/motion/) | Page transitions, hover effects, animated components |
-| **UI Components** | [Radix UI](https://www.radix-ui.com/) + [Shadcn UI](https://ui.shadcn.com/) | Accessible, unstyled component primitives + styled wrappers |
-| **Icons** | [Lucide React](https://lucide.dev/) | Consistent icon set throughout the UI |
-| **State / Data** | [TanStack Query 5](https://tanstack.com/query/latest) | Server state management, caching, background refetching |
-| **Forms** | [React Hook Form 7](https://react-hook-form.com/) | Performant form handling and validation |
-| **Code Editor** | [Monaco Editor](https://microsoft.github.io/monaco-editor/) | VS Code-grade in-browser code editor |
-| **Charts** | [Recharts 2](https://recharts.org/) | Progress analytics and data visualizations |
-| **Notifications** | [Sonner](https://sonner.emilkowal.ski/) | Toast notifications |
-| **Theme** | [Next Themes](https://github.com/pacocoursey/next-themes) | Dark/light mode management |
-| **Testing** | [Playwright 1.58](https://playwright.dev/) | End-to-end browser tests |
-| **Linting** | [ESLint 9](https://eslint.org/) | Code quality enforcement |
+### Frontend
+- **Framework:** Next.js 14+ with React 18+
+- **Language:** TypeScript / JavaScript
+- **Styling:** Tailwind CSS
+- **State Management:** React Context + Hooks
+- **UI Components:** Shadcn/ui
+- **Icons:** Lucide Icons
+
+### Backend
+- **Runtime:** Node.js
+- **Framework:** Express.js
+- **Language:** TypeScript / JavaScript
+- **API Style:** REST with JSON
+- **Middleware:** Express middleware for logging, CORS, authentication
+
+### AI & NLP
+- **LLM:** OpenAI API (GPT-4 / GPT-3.5)
+- **Prompt Engineering:** Custom prompts for hint generation
+- **Context Processing:** Hindsight memory integration
+- **Response Generation:** Streaming responses for real-time feedback
+
+### Database
+- **Primary:** MongoDB (Atlas)
+- **Collections:** Users, Sessions, Hints, Mistakes, Memory Store
+- **Indexing:** Optimized queries for user lookups and session retrieval
+
+### Deployment
+- **Frontend:** Vercel
+- **Backend:** Render / Railway / Heroku
+- **Database:** MongoDB Atlas (Cloud)
 
 ---
 
-## 🚀 Getting Started
+## 🔌 API Endpoints
+
+### Core Endpoints
+
+#### 1. **POST /api/mentor**
+Send a problem or question to the AI mentor
+
+**Request:**
+```json
+{
+  "userId": "user123",
+  "attemptCode": "def binary_search(arr, target):\n    return -1",
+  "problemId": "binary-search-101",
+  "language": "python",
+  "previousHints": ["Think about divide and conquer"]
+}
+```
+
+**Response:**
+```json
+{
+  "hint": "Try comparing the target with the middle element of the array",
+  "hintLevel": 2,
+  "encouragement": "You're on the right track!",
+  "mistakeDetected": "Off-by-one error in loop boundary"
+}
+```
+
+---
+
+#### 2. **POST /api/hint**
+Get a progressive hint for a specific problem
+
+**Request:**
+```json
+{
+  "userId": "user123",
+  "problemId": "binary-search-101",
+  "attemptCount": 3,
+  "hintPreference": "detailed"
+}
+```
+
+**Response:**
+```json
+{
+  "hint": "Consider using two pointers (left and right)...",
+  "suggestedApproach": "Two-pointer technique",
+  "resources": ["binary-search-tutorial.md"],
+  "nextStepHint": "What happens when left > right?"
+}
+```
+
+---
+
+#### 3. **POST /api/attempt**
+Submit a problem attempt for analysis
+
+**Request:**
+```json
+{
+  "userId": "user123",
+  "problemId": "binary-search-101",
+  "submittedCode": "def binary_search(arr, target):\n    left, right = 0, len(arr)-1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1",
+  "language": "python",
+  "testResults": { "passed": 8, "failed": 2 }
+}
+```
+
+**Response:**
+```json
+{
+  "result": "Partial Success",
+  "feedback": "Good logic, but check edge cases with empty arrays",
+  "mistakesFound": ["didnt_handle_empty_array", "logic_overflow"],
+  "nextProblem": "binary-search-advanced-202",
+  "hindsightMemoryUpdated": true
+}
+```
+
+---
+
+#### 4. **GET /api/session/:userId**
+Retrieve user's current session data
+
+**Response:**
+```json
+{
+  "sessionId": "session-abc123",
+  "userId": "user123",
+  "startTime": "2025-03-20T10:30:00Z",
+  "problemsSolved": 5,
+  "mistakesLogged": 12,
+  "hintsUsed": 8,
+  "estimatedMastery": 0.72,
+  "learningPath": ["array-basics", "binary-search", "dynamic-programming"],
+  "sessionSummary": {
+    "topicsLearned": ["binary search", "two-pointer technique"],
+    "weakAreas": ["edge case handling"],
+    "progressScore": 78
+  }
+}
+```
+
+---
+
+#### 5. **POST /api/summary**
+Generate session summary and update Hindsight memory
+
+**Request:**
+```json
+{
+  "userId": "user123",
+  "sessionId": "session-abc123",
+  "endTime": "2025-03-20T11:45:00Z"
+}
+```
+
+**Response:**
+```json
+{
+  "summary": {
+    "duration": 75,
+    "problemsAttempted": 5,
+    "successRate": 0.80,
+    "topicsLearned": ["binary search", "pointers"],
+    "mistakePatterns": ["off-by-one errors"],
+    "nextSessionRecommendations": ["practice edge cases", "dynamic programming intro"]
+  },
+  "hindsightMemoryUpdated": true,
+  "nextHintOptimization": "Will adapt hints to focus on edge case handling"
+}
+```
+
+---
+
+## 🧠 Hindsight Memory Model
+
+The heart of Hindsight is its intelligent memory system that learns from every interaction:
+
+### Memory Document Schema
+
+```typescript
+interface HindsightMemory {
+  userId: string;
+  sessions: SessionRecord[];
+  mistakePatterns: {
+    conceptId: string;
+    mistakeType: string;
+    frequency: number;
+    lastOccurred: Date;
+  }[];
+  hintHistory: {
+    attemptNumber: number;
+    hint: string;
+    effective: boolean;
+    mistakeResolved: boolean;
+  }[];
+  learningProfile: {
+    preferredLanguage: "detailed" | "concise" | "visual";
+    conceptMastery: Record<string, number>; // 0-1 score
+    difficultyLevel: "beginner" | "intermediate" | "advanced";
+    learningStyle: string;
+  };
+  sessionSummaries: {
+    date: Date;
+    conceptsLearned: string[];
+    mistakesFaced: string[];
+    hintsUtilized: number;
+    sessionNotes: string;
+  }[];
+}
+
+interface SessionRecord {
+  sessionId: string;
+  startTime: Date;
+  endTime: Date;
+  problemsAttempted: number;
+  mistakesLogged: string[];
+  hintsUsed: string[];
+  conceptsCovered: string[];
+  languagePreference: string;
+  difficulty: string;
+  timestamp: Date;
+}
+```
+
+### How Memory Improves Hints
+
+1. **Previous Mistakes** → Avoid giving hints about already-mastered concepts
+2. **Hint Effectiveness** → Refine language based on what worked before
+3. **Learning Patterns** → Recognize when users are ready for advanced topics
+4. **Preference Learning** → Adjust hint detail level based on user feedback
+5. **Concept Mastery** → Track progress on individual concepts
+
+---
+
+## 🚀 Installation
 
 ### Prerequisites
 
-- **Node.js 20+**
-- **npm** (or yarn / pnpm)
+- Node.js 16+ and npm/yarn
+- MongoDB Atlas account
+- OpenAI API key
+- Git
 
-### Installation
+### Frontend Setup
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/GauravKesh/hindsight_hackathon.git
-   cd hindsight_hackathon
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/Rohith0750/hindsight_hackthon_frontend.git
+cd hindsight_hackthon_frontend
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+# Install dependencies
+npm install
 
-3. **Start the development server**
-   ```bash
-   npm run dev
-   ```
+# Create environment file
+cp .env.example .env.local
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+# Start development server
+npm run dev
+```
 
-> On first load you will see the landing page. Click **Get Started** or navigate to `/auth` to log in. A mock user is provided for development purposes.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Backend Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/Rohith0750/hindsight_hackthon_backend.git
+cd hindsight_hackthon_backend
+
+# Install dependencies
+npm install
+
+# Create environment file
+cp .env.example .env
+
+# Start the server
+npm start
+```
+
+Backend runs on [http://localhost:5000](http://localhost:5000) by default.
 
 ---
 
-## 📜 Scripts
+## ⚙️ Environment Variables
 
-| Script | Command | Description |
-|--------|---------|-------------|
-| Development | `npm run dev` | Start Next.js dev server with hot reload |
-| Build | `npm run build` | Production build (outputs to `.next/`) |
-| Start | `npm start` | Serve the production build |
-| Lint | `npm run lint` | Run ESLint across all source files |
-| Test (E2E) | `npx playwright test` | Run Playwright end-to-end tests |
+### Frontend (`.env.local`)
+
+```env
+# API Configuration
+NEXT_PUBLIC_API_URL=http://localhost:5000/api
+NEXT_PUBLIC_APP_NAME=Hindsight
+
+# Auth
+NEXT_PUBLIC_AUTH_PROVIDER=jwt
+
+# Optional: Analytics
+NEXT_PUBLIC_ANALYTICS_ID=
+```
+
+### Backend (`.env`)
+
+```env
+# Server
+PORT=5000
+NODE_ENV=development
+
+# Database
+MONGO_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/hindsight
+
+# AI/LLM
+OPENAI_API_KEY=sk-...
+OPENAI_MODEL=gpt-4
+
+# JWT
+JWT_SECRET=your-secret-key-here
+JWT_EXPIRY=7d
+
+# CORS
+CORS_ORIGIN=http://localhost:3000
+
+# Logging
+LOG_LEVEL=debug
+```
+
+---
+
+## 📦 Deployment
+
+### Deploy Frontend to Vercel
+
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy
+vercel
+
+# Add environment variables via Vercel Dashboard
+# - NEXT_PUBLIC_API_URL=<backend-url>
+```
+
+Or connect GitHub repo to Vercel for auto-deployment.
+
+### Deploy Backend to Render
+
+1. **Create Render Account** → https://render.com
+2. **Connect GitHub Repository**
+3. **Create New Web Service**
+4. **Configure:**
+   - Build Command: `npm install`
+   - Start Command: `npm start`
+5. **Add Environment Variables** in Render Dashboard
+6. **Deploy**
+
+### MongoDB Atlas Setup
+
+1. Create cluster on MongoDB Atlas
+2. Create database user with strong password
+3. Whitelist IP addresses
+4. Copy connection string
+5. Set `MONGO_URI` in backend `.env`
+
+---
+
+## 📚 Example Flow
+
+### Scenario: User Learning Binary Search
+
+**Session Start**
+```
+User: "I'm learning binary search, but I keep getting wrong answers"
+```
+
+**Attempt 1 - Generic Hint**
+```
+Hindsight Memory: (Empty)
+AI Hint: "Think about dividing the search space in half"
+Result: Still incorrect
+```
+
+**Attempt 2 - Improved Hint**
+```
+Hindsight Memory: (Recorded: missed middle element logic)
+AI Hint: "You're close, but focus on calculating the middle index correctly: mid = (left + right) // 2"
+Result: Still incorrect
+```
+
+**Attempt 3 - Context-Aware Hint**
+```
+Hindsight Memory: (Recorded: off-by-one error pattern)
+AI Hint: "I noticed you're struggling with boundary conditions. 
+         Try this: ensure your loop continues while left <= right, 
+         not just left < right"
+Result: ✅ Correct!
+```
+
+**Next Session (1 Week Later)**
+```
+User: "I want to practice binary search variants"
+Hindsight Memory: (Remembers: previous off-by-one errors)
+
+AI directly gives:
+"Great! Since you've mastered the core concept last week, 
+ let's focus on boundary conditions which were tricky before. 
+ Here's a problem requiring careful edge case handling..."
+```
+
+---
+
+## 📸 Screenshots
+
+![Dashboard Placeholder](1.jpeg)
+*AI Mentor chat, problem list, and learning progress tracking*
+
+![Hint System Placeholder](h2.jpeg)
+*Progressive hints and real-time feedback*
+
+![Memory System Placeholder](h3.jpeg)
+*Learning patterns and mistake analysis*
+
+![Analytics Placeholder](h4.jpeg)
+*Progress tracking and performance metrics*
+
+---
+
+## 🚀 Future Improvements
+
+- [ ] **Difficulty Adaptation** — Automatically adjust problem difficulty based on performance
+- [ ] **Learning Path Generation** — AI-generated personalized learning paths
+- [ ] **Student Progress Dashboard** — Comprehensive analytics and insights
+- [ ] **Weak Area Detection** — Automatic identification of struggle areas
+- [ ] **Multi-User Support** — Group learning and peer collaboration
+- [ ] **Teacher Analytics** — Insights for educators tracking student progress
+- [ ] **Mobile App** — React Native app for iOS/Android
+- [ ] **Voice-Based Hints** — Audio explanations for auditory learners
+- [ ] **Gamification** — Points, badges, and leaderboards
+- [ ] **Multi-Language Support** — Support for multiple programming languages and natural languages
+- [ ] **Code Review Integration** — Real-time code quality feedback
+- [ ] **Collaborative Learning** — Pair programming and group sessions
+
+---
+
+##  License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+You are free to use, modify, and distribute this project for both personal and commercial purposes.
 
 ---
 
 ## 🤝 Contributing
 
-Please read [CONTRIBUTING.md](./CONTRIBUTING.md) for the full contribution workflow including branch naming conventions, commit message prefixes, and PR guidelines.
+Contributions are welcome! Please:
 
-**Quick summary:**
-- Branch naming: use your GitHub username as the branch name
-- Commit prefixes: `feat:`, `fix:`, `doc:`
-- Always sync with `main` before pushing
-- Never push directly to `main`
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
-## 🧹 Post-Migration Note
+## 📧 Support
 
-This project was migrated from **Vite** to **Next.js**. Some legacy configuration files (`vite.config.ts`, `tsconfig.app.json`) may still be present for environment-level compatibility. They can be safely ignored or removed in a future cleanup.
+For issues, questions, or suggestions:
+
+- **Open an Issue** on GitHub
+- **Email:** [rohithsd0222@gmail.com]
+
+
+---
+
+<div align="center">
+
+**Made with ❤️ by Rohith S D**
+
+⭐ Star us on GitHub if you find Hindsight helpful!
+
+</div>
