@@ -7,6 +7,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useAICoach } from "@/hooks/useAICoach";
 import { api } from "@/lib/api-client";
 import { hindsightClient } from "@/lib/hindsight";
+import type { Submission, TestCaseResult, Problem } from "@/lib/types";
 import {
   Play,
   Terminal,
@@ -21,30 +22,12 @@ import {
   Send,
   MessageSquare,
 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import Editor from "@monaco-editor/react";
 import { useParams, useRouter } from "next/navigation";
+import Editor from "@monaco-editor/react";
 
 /* ─── Types ─────────────────────────────────────────────────────── */
 type Language = "python" | "javascript" | "cpp" | "java";
 type Tab = "description" | "hints" | "submissions" | "mentor";
-
-/** Shape returned by the backend */
-interface Problem {
-  id: string;
-  _id?: string;
-  title: string;
-  slug: string;
-  description: string;
-  /** Backend sends snake_case */
-  starter_code?: Partial<Record<Language, string>>;
-  topic?: string;
-  difficulty: string;
-  tags?: string[];
-  constraints?: string | string[];
-  examples?: { input: string; output: string; _id?: string }[];
-  test_cases?: { input: string; output: string; is_hidden: boolean; _id?: string }[];
-}
 
 /* ─── Constants ──────────────────────────────────────────────────── */
 const LANGUAGES: { value: Language; label: string; monacoLang: string }[] = [
@@ -128,23 +111,22 @@ function ExampleBlock({ input, output, index }: { input: string; output: string;
   );
 }
 
+interface HintGateState {
+  status: 'initial' | 'loading' | 'active' | 'unlocked';
+  questions: string[];
+  passed: boolean[];
+  feedback: string;
+  hint: string;
+}
+
 interface HintGateViewProps {
-  state: {
-    status: 'initial' | 'loading' | 'active' | 'unlocked';
-    questions: string[];
-    passed: boolean[];
-    feedback: string;
-    hint?: string;
-  };
-  setState: (s: any) => void;
-  user: any;
-  problemId: string;
+  state: HintGateState;
   onRequest: () => void;
   onSubmitAnswer: (qIdx: number, answer: string) => void;
   answering: boolean;
 }
 
-function HintGateView({ state, setState, user, problemId, onRequest, onSubmitAnswer, answering }: HintGateViewProps) {
+function HintGateView({ state, onRequest, onSubmitAnswer, answering }: HintGateViewProps) {
   const [currentAnswer, setCurrentAnswer] = useState('');
 
   if (state.status === 'initial') {
@@ -179,7 +161,7 @@ function HintGateView({ state, setState, user, problemId, onRequest, onSubmitAns
         </div>
         <p>Well done! You have proven your understanding. Here is your hint:</p>
         <div className="p-4 bg-[#0f0f0f] border border-[#2d5a2d] rounded-md text-white italic font-serif">
-          "{state.hint || 'No hint available'}"
+          &ldquo;{state.hint || 'No hint available'}&rdquo;
         </div>
         <p className="text-xs text-[#737373]">You can also ask the Mentor for more details in the chat.</p>
       </div>
@@ -188,7 +170,7 @@ function HintGateView({ state, setState, user, problemId, onRequest, onSubmitAns
 
   return (
     <div className="space-y-6">
-      <p className="text-xs text-[#737373] italic">"{state.feedback}"</p>
+      <p className="text-xs text-[#737373] italic">&ldquo;{state.feedback}&rdquo;</p>
       {state.questions.map((q: string, i: number) => (
         <div key={i} className={`p-4 rounded-lg border ${state.passed[i] ? 'bg-[#1a2e1a] border-[#2d5a2d]' : 'bg-[#1a1a1a] border-[#2a2a2a]'}`}>
           <div className="flex items-center justify-between mb-3">
@@ -222,7 +204,7 @@ function HintGateView({ state, setState, user, problemId, onRequest, onSubmitAns
   );
 }
 
-function TestResultRow({ result }: { result: any }) {
+function TestResultRow({ result }: { result: TestCaseResult & { id?: string; actualOutput?: string } }) {
   const passed: boolean = result.passed;
   return (
     <div
@@ -261,10 +243,7 @@ export default function EditorPage() {
   const slug = params?.id as string;
   const router = useRouter();
 
-  const { data: problem, isLoading } = useProblem(slug) as {
-    data: Problem | undefined;
-    isLoading: boolean;
-  };
+  const { data: problem, isLoading } = useProblem(slug);
   const { user } = useAuth();
   const problemIdForCoach = problem?.id || problem?._id || '';
   const { messages, sendMessage, isLoading: aiLoading } = useAICoach(problemIdForCoach, user?.id || '');
@@ -274,7 +253,7 @@ export default function EditorPage() {
   const [code, setCode] = useState<string>("");
   const [activeTab, setActiveTab] = useState<Tab>("description");
   const [consoleOpen, setConsoleOpen] = useState(false);
-  const [testResults, setTestResults] = useState<any[]>([]);
+  const [testResults, setTestResults] = useState<(TestCaseResult & { id?: string; actualOutput?: string })[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [running, setRunning] = useState(false);
   const [chatInput, setChatInput] = useState('');
@@ -326,7 +305,7 @@ export default function EditorPage() {
         feedback: res.message,
         hint: ''
       });
-    } catch (err) {
+    } catch {
       setHintGate((s) => ({ ...s, status: 'initial', feedback: 'Failed to open hint gate.' }));
     }
   }, [problem, user]);
@@ -377,7 +356,7 @@ export default function EditorPage() {
       const res = await api.submitCode(problemId, code, language, user?.id, true);
 
       if (res.testResults) {
-        setTestResults(res.testResults.map((r: any) => ({
+        setTestResults(res.testResults.map((r: TestCaseResult) => ({
           id: `test-${r.testCase}`,
           passed: r.passed,
           actualOutput: r.actual,
@@ -387,12 +366,13 @@ export default function EditorPage() {
       } else {
         setTestResults([{ id: "run", actualOutput: res.verdict, passed: res.verdict === "accepted" || res.verdict === "Accepted" }]);
       }
-    } catch (err: any) {
-      setTestResults([{ id: 'error', passed: false, actualOutput: err.message }]);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setTestResults([{ id: 'error', passed: false, actualOutput: msg }]);
     } finally {
       setRunning(false);
     }
-  }, [code, language]);
+  }, [code, language, problem, user]);
 
   /* ── Submit ─────────────────────────────────────────────────────── */
   const handleSubmit = useCallback(async () => {
@@ -411,7 +391,7 @@ export default function EditorPage() {
 
       const accepted = res.verdict === "accepted" || res.verdict === "Accepted";
       if (res.testResults) {
-        setTestResults(res.testResults.map((r: any) => ({
+        setTestResults(res.testResults.map((r: TestCaseResult) => ({
           id: `test-${r.testCase}`,
           passed: r.passed,
           actualOutput: r.actual,
@@ -431,8 +411,9 @@ export default function EditorPage() {
           language,
         });
       }
-    } catch (err: any) {
-      setTestResults([{ id: 'error', passed: false, actualOutput: err.message }]);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setTestResults([{ id: 'error', passed: false, actualOutput: msg }]);
     } finally {
       setSubmitting(false);
     }
@@ -442,8 +423,8 @@ export default function EditorPage() {
     if (!chatInput.trim()) return;
     const content = chatInput;
     setChatInput('');
-    const response = await sendMessage(content);
-    if (response && (response as any).redirect_to_hint_gate) {
+    const response = await sendMessage(content) as { redirect_to_hint_gate?: boolean } | null;
+    if (response && response.redirect_to_hint_gate) {
       setActiveTab('hints');
       if (hintGate.status === 'initial') {
         handleRequestHintGate();
@@ -602,15 +583,12 @@ export default function EditorPage() {
 
             {activeTab === "hints" && (
               <div className="flex-1 overflow-y-auto p-5">
-                <HintGateView
-                  state={hintGate}
-                  setState={setHintGate}
-                  user={user}
-                  problemId={problemIdForCoach}
-                  onRequest={handleRequestHintGate}
-                  onSubmitAnswer={handleSubmitHintAnswer}
-                  answering={answeringHint}
-                />
+                  <HintGateView
+                    state={hintGate}
+                    onRequest={handleRequestHintGate}
+                    onSubmitAnswer={handleSubmitHintAnswer}
+                    answering={answeringHint}
+                  />
               </div>
             )}
 
@@ -666,7 +644,7 @@ export default function EditorPage() {
                     No submissions yet. Submit your solution to see results here.
                   </div>
                 ) : (
-                  pastSubmissions.map((s: any, i: number) => (
+                  pastSubmissions.map((s: Submission, i: number) => (
                     <div key={i} className="flex justify-between items-center p-3 rounded-md bg-[#1a1a1a] border border-[#2a2a2a] text-xs">
                       <div className="flex items-center gap-2">
                         <span className={`w-2 h-2 rounded-full ${s.verdict === 'accepted' || s.verdict === 'Accepted' ? 'bg-[#4ec94e]' : 'bg-[#ff6b6b]'}`} />

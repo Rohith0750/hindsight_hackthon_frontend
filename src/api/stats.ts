@@ -1,16 +1,16 @@
 import apiClient from "@/lib/apiClient";
 
 // 🔐 User Stats — requires auth token (sent by apiClient interceptor)
-export const getUserStats = async (_userId: string) => {
+export const getUserStats = async () => {
   try {
     const res = await apiClient.get("/stats/user/stats");
     return res;
-  } catch (err) {
+  } catch {
     return { data: { problemsSolved: 0, accuracy: 0, streak: 0, xp: 0 } };
   }
 };
 
-export const getInsightBanner = async (_userId: string) => {
+export const getInsightBanner = async () => {
   try {
     const res = await apiClient.get("/stats/insights/banner");
     return res;
@@ -19,7 +19,7 @@ export const getInsightBanner = async (_userId: string) => {
   }
 };
 
-export const getUserActivities = async (_userId: string) => {
+export const getUserActivities = async () => {
   try {
     const res = await apiClient.get("/stats/user/activities");
     return res;
@@ -28,7 +28,7 @@ export const getUserActivities = async (_userId: string) => {
   }
 };
 
-export const getUserProficiency = async (_userId: string) => {
+export const getUserProficiency = async () => {
   try {
     const res = await apiClient.get("/stats/user/proficiency");
     return res;
@@ -37,7 +37,7 @@ export const getUserProficiency = async (_userId: string) => {
   }
 };
 
-export const getRecommendedProblems = async (_userId: string) => {
+export const getRecommendedProblems = async () => {
   try {
     const res = await apiClient.get("/stats/problems/recommended");
     return res;
@@ -46,7 +46,7 @@ export const getRecommendedProblems = async (_userId: string) => {
     try {
       const res = await apiClient.get("/problem");
       const problems = res.data || [];
-      const recommended = problems.slice(0, 3).map((p: any) => ({
+      const recommended = problems.slice(0, 3).map((p: { _id?: string; id?: string; title: string; slug: string; difficulty: string }) => ({
         id: p._id || p.id,
         slug: p.slug,
         title: p.title,

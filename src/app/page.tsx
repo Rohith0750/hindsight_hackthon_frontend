@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Brain, Flame, Target, ArrowRight } from 'lucide-react';
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
+import NeuralBackground from '@/components/NeuralBackground';
 
 const stats = [
   { label: 'Problems', target: 2400, suffix: '+' },
@@ -79,7 +80,8 @@ const TypewriterHeading = () => {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-bg-main dot-grid-bg">
+    <div className="min-h-screen bg-bg-main relative overflow-hidden">
+      <NeuralBackground />
       {/* Nav */}
       <nav className="fixed top-0 w-full z-50 bg-bg-main/80 backdrop-blur-md border-b border-border">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">

@@ -3,8 +3,9 @@
 import { motion } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
 import { useMistakePatterns } from "@/hooks/useMistakePatterns";
-import { useUserProficiency, useUserStats } from "@/hooks/useStats";
+import { useUserProficiency, useUserStats, UserStats, UserProficiency } from "@/hooks/useStats";
 import { useSubmissions } from "@/hooks/useSubmissions";
+import type { MistakePattern, Insight, Submission } from "@/lib/types";
 import {
   Trophy,
   Flame,
@@ -36,16 +37,16 @@ export default function ProgressPage() {
   const { data: statsData } = useUserStats();
   const { data: pastSubmissions } = useSubmissions();
 
-  const insights = insightsData as any;
-  const proficiency = proficiencyData as any;
-  const stats = statsData as any;
+  const insights = insightsData as { patterns: MistakePattern[]; insights: Insight[] } | undefined;
+  const proficiency = proficiencyData as UserProficiency[] | undefined;
+  const stats = statsData as UserStats | undefined;
 
   const [expandedPattern, setExpandedPattern] = useState<string | null>(null);
 
   const radarData =
-    (proficiency || []).map((l: any) => ({
-      subject: l.name || l.language,
-      value: l.proficiency || l.solved,
+    (proficiency || []).map((l) => ({
+      subject: l.name,
+      value: l.proficiency,
       fullMark: 100,
     })) || [];
 
@@ -80,10 +81,10 @@ export default function ProgressPage() {
             <span className="text-xs font-body px-2 py-0.5 rounded bg-accent-teal/20 text-accent-teal">Hindsight Memory</span>
           </div>
           {insightsLoading ? (
-            <div className="space-y-3">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-20 bg-bg-card rounded-lg animate-pulse" />)}</div>
+            <div className="space-y-3">{Array.from({ length: 3 }).map((_, i) => <div key={`skeleton-${i}`} className="h-20 bg-bg-card rounded-lg animate-pulse" />)}</div>
           ) : (
-            (insights?.patterns || []).map((p: any) => (
-              <div key={p._id || p.id} className="bg-bg-card rounded-lg border border-border overflow-hidden">
+            (insights?.patterns || []).map((p, idx) => (
+              <div key={p.id || `pattern-${idx}`} className="bg-bg-card rounded-lg border border-border overflow-hidden">
                 <button
                   onClick={() => setExpandedPattern(expandedPattern === p.id ? null : p.id)}
                   className="w-full flex items-center justify-between p-4"
@@ -99,7 +100,7 @@ export default function ProgressPage() {
                   <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} className="px-4 pb-4 border-t border-border pt-3">
                     <div className="flex gap-1 mb-2">
                       {(p.trend || []).map((v: number, i: number) => (
-                        <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                        <div key={`trend-${i}`} className="flex-1 flex flex-col items-center gap-1">
                           <div className="w-full bg-bg-code rounded-sm" style={{ height: `${Math.max(v * 12, 4)}px` }}>
                             <div className="w-full h-full bg-fire-accent/60 rounded-sm" />
                           </div>
@@ -138,8 +139,8 @@ export default function ProgressPage() {
           {/* AI Report */}
           <h2 className="font-display text-lg font-semibold text-text-primary mt-4">AI Report Card</h2>
           <div className="grid gap-3">
-            {(insights?.insights || []).map((i: any) => (
-              <div key={i._id || i.id} className="bg-bg-code rounded-lg p-4 border border-border">
+            {(insights?.insights || []).map((i, idx) => (
+              <div key={i.id || `insight-${idx}`} className="bg-bg-code rounded-lg p-4 border border-border">
                 <p className="text-sm font-display text-text-primary">{i.title}</p>
                 <p className="text-xs font-body text-text-secondary mt-1">{i.description}</p>
                 {i.actionLink && (
@@ -161,14 +162,14 @@ export default function ProgressPage() {
           {!pastSubmissions || pastSubmissions.length === 0 ? (
             <p className="text-sm text-text-secondary">No submissions found.</p>
           ) : (
-            (pastSubmissions || []).slice(0, 10).map((s: any) => (
-              <div key={s._id || s.id} className="relative flex items-start gap-3">
-                <div className={`absolute left-[-16px] w-3 h-3 rounded-full border-2 ${s.verdict === 'accepted' || s.verdict === 'Accepted' ? 'bg-accent-teal border-accent-teal' : 'bg-fire-accent border-fire-accent'
+            (pastSubmissions as Submission[] || []).slice(0, 10).map((s, idx) => (
+              <div key={s.id || `sub-${idx}`} className="relative flex items-start gap-3">
+                <div className={`absolute left-[-16px] w-3 h-3 rounded-full border-2 ${s.verdict?.toLowerCase() === 'accepted' ? 'bg-accent-teal border-accent-teal' : 'bg-fire-accent border-fire-accent'
                   }`} />
                 <div>
-                  <p className="text-sm font-body text-text-primary">{s.problemTitle || s.problem}</p>
+                  <p className="text-sm font-body text-text-primary">{s.problemTitle}</p>
                   <div className="flex items-center gap-2 mt-0.5">
-                    <span className={`text-xs font-display ${s.verdict === 'accepted' || s.verdict === 'Accepted' ? 'text-accent-teal' : 'text-fire-accent'}`}>{s.verdict}</span>
+                    <span className={`text-xs font-display ${s.verdict?.toLowerCase() === 'accepted' ? 'text-accent-teal' : 'text-fire-accent'}`}>{s.verdict}</span>
                     <span className="text-xs font-body text-text-secondary">{s.language}</span>
                     <span className="text-xs font-body text-text-secondary">{new Date(s.createdAt || s.timestamp).toLocaleDateString()}</span>
                   </div>

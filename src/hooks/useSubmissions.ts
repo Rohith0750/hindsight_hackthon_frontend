@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api-client';
 import { useAuth } from './useAuth';
+import type { Submission } from '@/lib/types';
 
 export const useSubmissions = (problemId?: string) => {
     const { user } = useAuth();
@@ -9,7 +10,7 @@ export const useSubmissions = (problemId?: string) => {
         queryFn: async () => {
             const all = await api.getSubmissions(user?.id || '');
             if (problemId) {
-                return all.filter((s: any) => s.problemId === problemId || s.problem_id === problemId);
+                return all.filter((s: Submission) => s.problemId === problemId || s.problem_id === problemId);
             }
             return all;
         },

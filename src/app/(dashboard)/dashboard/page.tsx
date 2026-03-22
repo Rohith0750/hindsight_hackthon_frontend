@@ -8,6 +8,10 @@ import {
   useInsightBanner,
   useUserActivities,
   useRecommendedProblems,
+  useUserProficiency,
+  RecommendedProblem,
+  UserActivity,
+  UserProficiency,
 } from "@/hooks/useStats";
 import Link from "next/link";
 import {
@@ -29,13 +33,14 @@ export default function DashboardPage() {
   const { data: insights } = useInsightBanner();
   const { data: activities } = useUserActivities();
   const { data: recommended } = useRecommendedProblems();
+  const { data: proficiency } = useUserProficiency();
 
   // ✅ fallback (safe)
-  const profile = stats || {
-    problemsSolved: 0,
-    accuracy: 0,
-    streak: 0,
-    languages: [],
+  const profile = {
+    problemsSolved: stats?.problemsSolved ?? 0,
+    accuracy: stats?.accuracy ?? 0,
+    streak: stats?.streak ?? 0,
+    languages: proficiency || [],
   };
 
   return (
@@ -46,10 +51,7 @@ export default function DashboardPage() {
       className="space-y-6"
     >
       {/* 🔥 Stats Row */}
-      <motion.div
-        variants={item}
-        className="grid grid-cols-2 lg:grid-cols-4 gap-4"
-      >
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           {
             icon: Trophy,
@@ -69,9 +71,16 @@ export default function DashboardPage() {
             value: `${profile.accuracy || 0}%`,
             color: "text-accent-cyan",
           },
+          {
+            icon: Zap,
+            label: "XP",
+            value: (stats?.xp ?? 0).toLocaleString(),
+            color: "text-badge-blue",
+          },
         ].map((s) => (
-          <div
+          <motion.div
             key={s.label}
+            variants={item}
             className="bg-bg-card rounded-lg p-4 border border-border"
           >
             <div className="flex items-center gap-2 mb-2">
@@ -79,14 +88,13 @@ export default function DashboardPage() {
               <span className="text-xs text-text-secondary">{s.label}</span>
             </div>
             <p className="text-2xl font-bold text-text-primary">{s.value}</p>
-          </div>
+          </motion.div>
         ))}
-      </motion.div>
+      </div>
 
       {/* 🤖 AI Insight */}
       {insights && (
-        <motion.div
-          variants={item}
+        <div
           className="bg-bg-code rounded-lg p-5 border-l-4 border-fire-accent flex gap-4"
         >
           <Brain className="w-6 h-6 text-fire-accent" />
@@ -95,25 +103,25 @@ export default function DashboardPage() {
               {insights.message}
             </p>
           </div>
-        </motion.div>
+        </div>
       )}
 
       <div className="grid lg:grid-cols-[1fr_280px] gap-6">
         {/* LEFT */}
         <div className="space-y-6">
           {/* 🔥 Recommended */}
-          <motion.div variants={item}>
+          <div>
             <h2 className="text-lg font-semibold mb-3">
               Recommended For You
             </h2>
 
-            {recommended?.length === 0 ? (
+            {(recommended || []).length === 0 ? (
               <p className="text-sm text-text-secondary">
                 No recommendations yet. Solve more problems 🚀
               </p>
             ) : (
               <div className="grid sm:grid-cols-3 gap-4">
-                {recommended?.slice(0, 3).map((p: any) => (
+                {(recommended || []).slice(0, 3).map((p: RecommendedProblem) => (
                   <Link
                     key={p.id}
                     href={`/problems/${p.slug}`} // ✅ slug fix
@@ -137,48 +145,53 @@ export default function DashboardPage() {
                 ))}
               </div>
             )}
-          </motion.div>
+          </div>
 
           {/* 📊 Recent Activity */}
-          <motion.div variants={item}>
+          <div>
             <h2 className="text-lg font-semibold mb-3">
               Recent Activity
             </h2>
 
             <div className="bg-bg-card border rounded-lg divide-y">
-              {activities?.slice(0, 5).map((s: any, i: number) => (
-                <div
-                  key={i}
-                  className="flex justify-between px-4 py-3"
-                >
-                  <div className="flex gap-3">
-                    <span
-                      className={`w-2 h-2 rounded-full ${
-                        s.verdict === "accepted"
-                          ? "bg-accent-teal"
-                          : "bg-fire-accent"
-                      }`}
-                    />
-                    <span className="text-sm">{s.problem}</span> {/* ✅ FIX */}
-                  </div>
+              {(activities || []).length === 0 ? (
+                <p className="p-4 text-sm text-text-secondary">No recent activity yet.</p>
+              ) : (
+                (activities || []).slice(0, 5).map((s: UserActivity, i: number) => (
+                  <div
+                    key={i}
+                    className="flex justify-between px-4 py-3"
+                  >
+                    <div className="flex gap-3">
+                      <span
+                        className={`w-2 h-2 rounded-full ${
+                          s.verdict?.toLowerCase() === "accepted"
+                            ? "bg-accent-teal"
+                            : "bg-fire-accent"
+                        }`}
+                      />
+                      <span className="text-sm">
+                        {typeof s.problem === 'object' ? s.problem.title : s.problem}
+                      </span>
+                    </div>
 
-                  <div className="flex gap-3">
-                    <span className="text-xs">{s.verdict}</span>
-                    <span className="text-xs text-text-secondary">
-                      {s.language}
-                    </span>
+                    <div className="flex gap-3">
+                      <span className="text-xs">{s.verdict}</span>
+                      <span className="text-xs text-text-secondary">
+                        {s.language}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
-          </motion.div>
+          </div>
         </div>
 
         {/* RIGHT */}
         <div className="space-y-6">
           {/* 🔥 Streak */}
-          <motion.div
-            variants={item}
+          <div
             className="bg-bg-card p-4 border rounded-lg text-center"
           >
             <Flame className="w-10 h-10 text-fire-accent mx-auto" />
@@ -186,16 +199,15 @@ export default function DashboardPage() {
               {profile.streak}
             </p>
             <p className="text-xs text-text-secondary">Day Streak</p>
-          </motion.div>
+          </div>
 
           {/* 💻 Languages */}
-          <motion.div
-            variants={item}
+          <div
             className="bg-bg-card p-4 border rounded-lg"
           >
             <h3 className="text-sm font-semibold mb-3">Languages</h3>
 
-            {profile.languages?.map((l: any) => (
+            {(profile.languages || []).map((l: UserProficiency) => (
               <div key={l.name} className="mb-2">
                 <div className="flex justify-between text-xs">
                   <span>{l.name}</span>
@@ -209,7 +221,7 @@ export default function DashboardPage() {
                 </div>
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
       </div>
     </motion.div>

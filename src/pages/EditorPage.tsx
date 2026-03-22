@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { api } from '@/lib/api-client';
 import { hindsightClient } from '@/lib/hindsight';
 import { Play, Send, Terminal, ChevronDown, Brain, CheckCircle2, XCircle } from 'lucide-react';
-import type { TestResult } from '@/lib/types';
+import type { TestCaseResult } from '@/lib/types';
 import Editor from '@monaco-editor/react';
 
 const languages = ['python', 'javascript', 'cpp'];
@@ -25,7 +25,7 @@ const EditorPage = () => {
   const [language, setLanguage] = useState('python');
   const [code, setCode] = useState('');
   const [consoleOpen, setConsoleOpen] = useState(false);
-  const [testResults, setTestResults] = useState<TestResult[]>([]);
+  const [testResults, setTestResults] = useState<(TestCaseResult & { id?: string | number; actualOutput?: string | number })[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [running, setRunning] = useState(false);
   const [mistakeToast, setMistakeToast] = useState<string | null>(null);
@@ -44,7 +44,13 @@ const EditorPage = () => {
     setRunning(true);
     setConsoleOpen(true);
     const results = await api.runCode(code, language);
-    setTestResults(results);
+    setTestResults(
+      results.testResults?.map((r) => ({
+        ...r,
+        id: r.testCase || 'test',
+        actualOutput: r.actual || '',
+      })) || []
+    );
     setRunning(false);
   }, [code, language]);
 
@@ -70,8 +76,10 @@ const EditorPage = () => {
     setConsoleOpen(true);
     setTestResults([{
       id: 'submit',
+      testCase: 'Full test suite',
       input: 'Full test suite',
-      expectedOutput: '-',
+      expected: '-',
+      actual: result.verdict,
       actualOutput: result.verdict,
       passed: result.verdict === 'Accepted',
     }]);
@@ -102,7 +110,7 @@ const EditorPage = () => {
             }`}>{problem.difficulty}</span>
           </div>
           <div className="flex gap-1.5">
-            {problem.tags.map(t => (
+            {problem.tags.map((t: string) => (
               <span key={t} className="text-xs font-body px-2 py-0.5 rounded bg-bg-code text-text-secondary">{t}</span>
             ))}
           </div>
@@ -139,7 +147,9 @@ const EditorPage = () => {
               <div>
                 <p className="text-text-primary font-display text-xs font-semibold mb-1">Constraints:</p>
                 <ul className="list-disc list-inside space-y-0.5">
-                  {problem.constraints.map((c, i) => <li key={i} className="text-xs font-code">{c}</li>)}
+                  {(Array.isArray(problem.constraints) ? problem.constraints : [problem.constraints]).map((c: string, i: number) => (
+                    <li key={i} className="text-xs font-code">{c}</li>
+                  ))}
                 </ul>
               </div>
             </div>

@@ -1,22 +1,28 @@
 export interface Problem {
   id: string;
+  _id?: string;
   title: string;
-  difficulty: 'Easy' | 'Medium' | 'Hard';
+  difficulty: string;
   tags: string[];
-  acceptance: number;
+  slug?: string;
+  topic?: string;
+  acceptance?: number;
   description: string;
   examples: ProblemExample[];
-  constraints: string[];
-  starterCode: Record<string, string>;
-  aiPriority: 'High' | 'Medium' | null;
-  aiReason: string;
+  constraints: string | string[];
+  starterCode?: Record<string, string>;
+  starter_code?: Record<string, string>;
+  aiPriority?: 'High' | 'Medium' | null;
+  aiReason?: string;
   status?: 'solved' | 'attempted' | 'unsolved';
+  test_cases?: { input: string; output: string; is_hidden: boolean; _id?: string }[];
 }
 
 export interface ProblemExample {
   input: string;
   output: string;
   explanation: string;
+  _id?: string;
 }
 
 export interface UserProfile {
@@ -53,12 +59,14 @@ export interface MistakePattern {
 export interface Submission {
   id: string;
   problemId: string;
+  problem_id?: string;
   problemTitle: string;
-  verdict: 'Accepted' | 'Wrong Answer' | 'Time Limit Exceeded' | 'Runtime Error';
+  verdict: string;
   runtime: string;
   memory: string;
   language: string;
   timestamp: string;
+  createdAt?: string;
   code: string;
 }
 
@@ -158,4 +166,27 @@ export interface StreakActivity {
   date: string;
   solved: number;
   frozen: boolean;
+}
+
+export interface TestCaseResult {
+  testCase?: string | number;
+  passed: boolean;
+  actual?: string;
+  expected?: string;
+  input?: string;
+}
+
+export interface JudgeResponse {
+  verdict: string;
+  testResults?: TestCaseResult[];
+  runtime?: string;
+  memory?: string;
+  error?: string;
+}
+
+export interface CoachResponse {
+  message?: string;
+  response?: string;
+  data?: { message?: string };
+  redirect_to_hint_gate?: boolean;
 }

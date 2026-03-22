@@ -1,5 +1,5 @@
-import axios from 'axios';
-import type { Problem, MistakePattern, Insight, LearningPathNode, Submission, SkillNode, StreakActivity, Boss } from './types';
+import axios, { InternalAxiosRequestConfig } from 'axios';
+import type { Problem, MistakePattern, Insight, LearningPathNode, Submission, SkillNode, StreakActivity, Boss, ChatMessage, JudgeResponse, CoachResponse } from './types';
 import { LEARNING_PATH_NODES, BOSS_DATA, SKILL_TREE_DATA, STREAK_ACTIVITY, SUBMISSIONS } from './mock-data';
 import { hindsightClient } from './hindsight';
 
@@ -9,7 +9,7 @@ const MAIN_API = process.env.NEXT_PUBLIC_API_URL ?? 'https://hindsight-hackthon-
 const mainClient = axios.create({ baseURL: MAIN_API });
 
 // Attach JWT to all requests
-const addAuth = (config: any) => {
+const addAuth = (config: InternalAxiosRequestConfig) => {
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('token');
     if (token) config.headers.Authorization = `Bearer ${token}`;
@@ -37,7 +37,7 @@ export const api = {
     } catch { return null; }
   },
 
-  endSession: async (userId: string, data: any) => {
+  endSession: async (userId: string, data: Record<string, unknown>) => {
     try {
       return mainClient.post('/session/end', { user_id: userId, ...data });
     } catch { return null; }
@@ -55,13 +55,13 @@ export const api = {
   },
 
   // ─── Code Execution ─────────────────────────────────────────────────────────
-  runCode: async (code: string, language: string): Promise<any> => {
+  runCode: async (code: string, language: string): Promise<JudgeResponse> => {
     const res = await mainClient.post('/code/run', { code, language });
     return res.data;
   },
 
   // Full judge: runs all test cases, stores result, updates XP
-  submitCode: async (problemId: string, code: string, language: string, userId?: string, isDryRun?: boolean): Promise<any> => {
+  submitCode: async (problemId: string, code: string, language: string, userId?: string, isDryRun?: boolean): Promise<JudgeResponse> => {
     const res = await mainClient.post('/submission/judge', {
       user_id: userId || 'guest',
       problem_id: problemId,
@@ -83,7 +83,7 @@ export const api = {
   },
 
   // ─── AI Coach Chat ───────────────────────────────────────────────────────────
-  sendCoachMessage: async (message: string, problemId: string, userId: string, history: any[] = []): Promise<any> => {
+  sendCoachMessage: async (message: string, problemId: string, userId: string, history: ChatMessage[] = []): Promise<CoachResponse> => {
     const res = await mainClient.post('/chat/message', {
       user_id: userId, message, conversation_history: history, problem_id: problemId,
     });
@@ -100,7 +100,7 @@ export const api = {
   },
 
   // ─── Streak Activity (heatmap) ───────────────────────────────────────────────
-  getStreakActivity: async (_userId: string): Promise<StreakActivity[]> => {
+  getStreakActivity: async (): Promise<StreakActivity[]> => {
     try {
       const res = await mainClient.get('/stats/streak-activity');
       return res.data;

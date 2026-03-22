@@ -6,11 +6,11 @@ import { useAuth } from "@/hooks/useAuth";
 type State<T> = {
   data: T | null;
   isLoading: boolean;
-  error: any;
+  error: Error | null;
 };
 
 // 🔥 reusable fetch hook
-const useFetch = <T,>(fn: () => Promise<any>, key: string, dependencies: any[] = []) => {
+const useFetch = <T>(fn: () => Promise<{ data: T }>, key: string, dependencies: unknown[] = []) => {
   const [state, setState] = useState<State<T>>({
     data: null,
     isLoading: true,
@@ -35,7 +35,7 @@ const useFetch = <T,>(fn: () => Promise<any>, key: string, dependencies: any[] =
           setState({
             data: null,
             isLoading: false,
-            error: err,
+            error: err instanceof Error ? err : new Error(String(err)),
           });
         }
       }
@@ -55,24 +55,50 @@ const useFetch = <T,>(fn: () => Promise<any>, key: string, dependencies: any[] =
 // 📊 STATS HOOKS
 //
 
+export interface UserStats {
+  problemsSolved: number;
+  accuracy: number;
+  streak: number;
+  xp: number;
+  hintsUsed?: number;
+  hintsEarned?: number;
+}
+
 export const useUserStats = () => {
   const { user } = useAuth();
-  return useFetch(() => statsApi.getUserStats(user?.id || ""), "user-stats", [user?.id]);
+  return useFetch<UserStats>(() => statsApi.getUserStats(), "user-stats", [user?.id]);
 };
+
+export interface UserActivity {
+  problem: string | { title: string };
+  verdict: string;
+  language: string;
+  timestamp: string;
+}
 
 export const useUserActivities = () => {
   const { user } = useAuth();
-  return useFetch(() => statsApi.getUserActivities(user?.id || ""), "user-activities", [user?.id]);
+  return useFetch<UserActivity[]>(() => statsApi.getUserActivities(), "user-activities", [user?.id]);
 };
+
+export interface UserProficiency {
+  name: string;
+  proficiency: number;
+}
 
 export const useUserProficiency = () => {
   const { user } = useAuth();
-  return useFetch(() => statsApi.getUserProficiency(user?.id || ""), "user-proficiency", [user?.id]);
+  return useFetch<UserProficiency[]>(() => statsApi.getUserProficiency(), "user-proficiency", [user?.id]);
 };
+
+export interface InsightBanner {
+  message: string;
+  type: string;
+}
 
 export const useInsightBanner = () => {
   const { user } = useAuth();
-  return useFetch(() => statsApi.getInsightBanner(user?.id || ""), "insight-banner", [user?.id]);
+  return useFetch<InsightBanner>(() => statsApi.getInsightBanner(), "insight-banner", [user?.id]);
 };
 
 export interface RecommendedProblem {
@@ -85,7 +111,7 @@ export interface RecommendedProblem {
 
 export const useRecommendedProblems = () => {
   const { user } = useAuth();
-  return useFetch<RecommendedProblem[]>(() => statsApi.getRecommendedProblems(user?.id || ""), "recommended-problems", [user?.id]);
+  return useFetch<RecommendedProblem[]>(() => statsApi.getRecommendedProblems(), "recommended-problems", [user?.id]);
 };
 
 export const useDashboardData = () => {
