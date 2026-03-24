@@ -80,7 +80,7 @@ const TypewriterHeading = () => {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-bg-main relative overflow-hidden">
+    <div className="min-h-screen relative overflow-hidden">
       <NeuralBackground />
       {/* Nav */}
       <nav className="fixed top-0 w-full z-50 bg-bg-main/80 backdrop-blur-md border-b border-border">

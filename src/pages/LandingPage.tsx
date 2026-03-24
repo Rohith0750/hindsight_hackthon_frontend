@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Brain, Flame, Target, ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import NeuralBackground from '../components/NeuralBackground';
 
 const stats = [
   { label: 'Problems', target: 2400, suffix: '+' },
@@ -38,7 +39,8 @@ const item = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transiti
 
 const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-bg-main dot-grid-bg">
+    <div className="min-h-screen relative overflow-hidden">
+      <NeuralBackground />
       {/* Nav */}
       <nav className="fixed top-0 w-full z-50 bg-bg-main/80 backdrop-blur-md border-b border-border">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">

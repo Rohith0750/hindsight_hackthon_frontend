@@ -56,7 +56,7 @@ const NeuralBackground: React.FC = () => {
 
     let animationFrameId: number;
     let particles: Particle[] = [];
-    const particleCount = 60;
+    const particleCount = 100;
     const connectionDistance = 150;
     const mouse = { x: -100, y: -100, radius: 150 };
 
@@ -84,7 +84,7 @@ const NeuralBackground: React.FC = () => {
           if (distance < connectionDistance) {
             ctx.beginPath();
             const opacity = 1 - distance / connectionDistance;
-            ctx.strokeStyle = `rgba(0, 184, 163, ${opacity * 0.2})`;
+            ctx.strokeStyle = `rgba(0, 184, 163, ${opacity * 0.4})`;
             ctx.lineWidth = 1;
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -120,7 +120,7 @@ const NeuralBackground: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 -z-10 bg-transparent pointer-events-none"
+      className="fixed inset-0 -z-1 pointer-events-none"
       style={{ filter: 'blur(0.5px)' }}
     />
   );

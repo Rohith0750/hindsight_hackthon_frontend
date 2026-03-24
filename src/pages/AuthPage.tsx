@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '@/hooks/useAuth';
 import { Github } from 'lucide-react';
 import { useEffect } from 'react';
+import NeuralBackground from '../components/NeuralBackground';
 
 interface CodeSnippet {
   lang: string;
@@ -71,10 +72,11 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex bg-bg-main">
+    <div className="min-h-screen flex relative overflow-hidden">
+      <NeuralBackground />
       {/* Left panel */}
       <div className="hidden lg:flex flex-col justify-center w-1/2 p-12 relative overflow-hidden">
-        <div className="absolute inset-0 dot-grid-bg opacity-50" />
+        <div className="absolute inset-0 bg-accent-teal/5 opacity-50" />
         <div className="relative z-10">
           <p className="font-display text-sm text-accent-teal mb-4 tracking-wider uppercase">CodeMind AI Coach</p>
           <AnimatePresence mode="wait">

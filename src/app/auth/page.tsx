@@ -100,7 +100,7 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex bg-bg-main relative">
+    <div className="min-h-screen flex relative">
       <NeuralBackground />
       {/* Left panel */}
       <div className="hidden lg:flex flex-col justify-center w-1/2 p-12 relative overflow-hidden">
