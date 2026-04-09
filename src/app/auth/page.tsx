@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import { Github } from "lucide-react";
 import NeuralBackground from "@/components/NeuralBackground";
+import AuthLoader from "@/components/AuthLoader";
 
 const codeSnippets = [
   {
@@ -101,6 +102,9 @@ export default function AuthPage() {
 
   return (
     <div className="min-h-screen flex relative">
+      <AnimatePresence>
+        {loading && <AuthLoader />}
+      </AnimatePresence>
       <NeuralBackground />
       {/* Left panel */}
       <div className="hidden lg:flex flex-col justify-center w-1/2 p-12 relative overflow-hidden">
@@ -223,7 +227,7 @@ export default function AuthPage() {
               className="w-full py-2.5 rounded-md bg-btn-run text-bg-main font-display font-semibold text-sm hover:shadow-[0_0_20px_hsl(168_62%_47%/0.3)] transition-all disabled:opacity-50"
             >
               {loading
-                ? "Loading..."
+                ? "Processing..."
                 : mode === "signin"
                   ? "Sign In"
                   : "Create Account"}
